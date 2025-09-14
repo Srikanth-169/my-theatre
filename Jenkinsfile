@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                https://github.com/Srikanth-169/my-theatre.git
+                git url: 'https://github.com/Srikanth-169/my-theatre.git', branch: 'main'
             }
         }
 
@@ -37,16 +37,15 @@ pipeline {
             steps {
                 sshagent(['ssh-key-id']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER} '
-                        docker pull ${DOCKER_IMAGE}
-                        docker stop ${APP_NAME} || true
-                        docker rm ${APP_NAME} || true
-                        docker run -d --name ${APP_NAME} -p 9090:8080 ${DOCKER_IMAGE}
-                    '
+                        ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER} '
+                            docker pull ${DOCKER_IMAGE}
+                            docker stop ${APP_NAME} || true
+                            docker rm ${APP_NAME} || true
+                            docker run -d --name ${APP_NAME} -p 9090:8080 ${DOCKER_IMAGE}
+                        '
                     """
                 }
             }
         }
     }
 }
-
